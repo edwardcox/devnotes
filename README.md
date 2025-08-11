@@ -16,7 +16,7 @@ Dev Notes is a feature-rich, portable note-taking application designed specifica
 **Contact:** edward.cox02@gmail.com  
 **License:** MIT License (Open Source)
 
-**This is my very first open source project contribution to the community at large. My way of saying Thank You to all who have helped me along the way. Hope you like it.**
+**This is my very first open source project contribution to the community at large. My way of saying Thank You to all who have helped me along the way. Hope you find it as useful as I have.**
 
 
 ## ✨ Features
