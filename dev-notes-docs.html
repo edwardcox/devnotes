@@ -1,0 +1,1561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev Notes Documentation - Complete Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f9fafb;
+            --bg-tertiary: #f3f4f6;
+            --text-primary: #111827;
+            --text-secondary: #6b7280;
+            --accent: #6366f1;
+            --accent-hover: #4f46e5;
+            --border: #e5e7eb;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --code-bg: #1a1b23;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a1b23;
+            --bg-secondary: #2d2e3f;
+            --bg-tertiary: #373849;
+            --text-primary: #e4e4e7;
+            --text-secondary: #a1a1aa;
+            --border: #3f4051;
+            --code-bg: #0d0e14;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+
+        /* Header */
+        .header {
+            background: var(--bg-secondary);
+            border-bottom: 2px solid var(--border);
+            padding: 2rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .version-badge {
+            background: var(--accent);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .theme-toggle {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background: var(--bg-primary);
+            border-color: var(--accent);
+        }
+
+        /* Navigation */
+        .nav {
+            background: var(--bg-tertiary);
+            padding: 1rem 0;
+            position: sticky;
+            top: 80px;
+            z-index: 99;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            gap: 2rem;
+            overflow-x: auto;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .nav-link.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 3rem;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: sticky;
+            top: 160px;
+            height: fit-content;
+        }
+
+        .toc {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .toc-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .toc-list {
+            list-style: none;
+        }
+
+        .toc-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .toc-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            display: block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .toc-link:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            transform: translateX(4px);
+        }
+
+        .toc-link.active {
+            color: var(--accent);
+            background: var(--bg-tertiary);
+        }
+
+        .toc-sublist {
+            list-style: none;
+            margin-left: 1rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Content */
+        .content {
+            min-width: 0;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+            scroll-margin-top: 180px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--accent);
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem 0;
+            color: var(--text-primary);
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 1.5rem 0 0.75rem 0;
+            color: var(--text-primary);
+        }
+
+        h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 1rem 0 0.5rem 0;
+            color: var(--text-primary);
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-icon {
+            font-size: 1.5rem;
+        }
+
+        /* Feature Grid */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .feature-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-color: var(--accent);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-description {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Code Blocks */
+        pre {
+            background: var(--code-bg);
+            color: #e4e4e7;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        code {
+            background: var(--bg-tertiary);
+            color: var(--accent);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        th {
+            background: var(--bg-tertiary);
+            padding: 0.75rem;
+            text-align: left;
+            border: 1px solid var(--border);
+            font-weight: 600;
+        }
+
+        td {
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+        }
+
+        tr:hover {
+            background: var(--bg-secondary);
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 1rem 0;
+            padding-left: 2rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Alerts */
+        .alert {
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            border: 1px solid;
+        }
+
+        .alert-info {
+            background: rgba(99, 102, 241, 0.1);
+            border-color: var(--accent);
+            color: var(--text-primary);
+        }
+
+        .alert-success {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: var(--success);
+        }
+
+        .alert-warning {
+            background: rgba(245, 158, 11, 0.1);
+            border-color: var(--warning);
+        }
+
+        .alert-danger {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: var(--danger);
+        }
+
+        /* Keyboard Shortcuts */
+        .kbd {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 0.2rem 0.5rem;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.85rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            min-width: 24px;
+            text-align: center;
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin: 0 0.25rem;
+        }
+
+        .badge-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .badge-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .badge-warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        /* Quick Links */
+        .quick-links {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .quick-link {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .quick-link:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            .nav-content {
+                padding: 0 1rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Search Highlight */
+        mark {
+            background: rgba(99, 102, 241, 0.3);
+            color: var(--text-primary);
+            padding: 0.1rem 0.2rem;
+            border-radius: 2px;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-secondary);
+            border-top: 2px solid var(--border);
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-icon">📝</span>
+                <span class="logo-text">Dev Notes</span>
+                <span class="version-badge">v3.5</span>
+            </div>
+            <button class="theme-toggle" onclick="toggleTheme()">
+                <span id="themeIcon">🌙</span>
+                <span id="themeText">Dark Mode</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-content">
+            <a href="#overview" class="nav-link active">Overview</a>
+            <a href="#quick-start" class="nav-link">Quick Start</a>
+            <a href="#user-guide" class="nav-link">User Guide</a>
+            <a href="#features" class="nav-link">Features</a>
+            <a href="#developer" class="nav-link">Developer</a>
+            <a href="#architecture" class="nav-link">Architecture</a>
+            <a href="#faq" class="nav-link">FAQ</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="toc">
+                <h3 class="toc-title">📚 Table of Contents</h3>
+                <ul class="toc-list">
+                    <li class="toc-item">
+                        <a href="#overview" class="toc-link active">Overview</a>
+                        <ul class="toc-sublist">
+                            <li class="toc-item"><a href="#what" class="toc-link">What is Dev Notes?</a></li>
+                            <li class="toc-item"><a href="#why" class="toc-link">Why Dev Notes?</a></li>
+                            <li class="toc-item"><a href="#who" class="toc-link">Who is it for?</a></li>
+                        </ul>
+                    </li>
+                    <li class="toc-item">
+                        <a href="#quick-start" class="toc-link">Quick Start</a>
+                    </li>
+                    <li class="toc-item">
+                        <a href="#user-guide" class="toc-link">User Guide</a>
+                        <ul class="toc-sublist">
+                            <li class="toc-item"><a href="#creating-notes" class="toc-link">Creating Notes</a></li>
+                            <li class="toc-item"><a href="#organizing" class="toc-link">Organizing</a></li>
+                            <li class="toc-item"><a href="#markdown" class="toc-link">Markdown</a></li>
+                            <li class="toc-item"><a href="#shortcuts" class="toc-link">Shortcuts</a></li>
+                        </ul>
+                    </li>
+                    <li class="toc-item">
+                        <a href="#features" class="toc-link">Features</a>
+                    </li>
+                    <li class="toc-item">
+                        <a href="#developer" class="toc-link">Developer Guide</a>
+                        <ul class="toc-sublist">
+                            <li class="toc-item"><a href="#setup" class="toc-link">Setup</a></li>
+                            <li class="toc-item"><a href="#storage" class="toc-link">Storage</a></li>
+                            <li class="toc-item"><a href="#customization" class="toc-link">Customization</a></li>
+                        </ul>
+                    </li>
+                    <li class="toc-item">
+                        <a href="#architecture" class="toc-link">Architecture</a>
+                    </li>
+                    <li class="toc-item">
+                        <a href="#faq" class="toc-link">FAQ</a>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Content -->
+        <main class="content">
+            <!-- Overview Section -->
+            <section id="overview" class="section">
+                <h1>📝 Dev Notes Documentation</h1>
+                
+                <div class="alert alert-info">
+                    <strong>Welcome!</strong> This is the complete documentation for Dev Notes v3.5 - a powerful, single-file developer notes application that works anywhere.
+                </div>
+
+                <div class="quick-links">
+                    <a href="#quick-start" class="quick-link">
+                        🚀 Get Started
+                    </a>
+                    <a href="#shortcuts" class="quick-link">
+                        ⌨️ Keyboard Shortcuts
+                    </a>
+                    <a href="#features" class="quick-link">
+                        ✨ Features
+                    </a>
+                    <a href="#developer" class="quick-link">
+                        💻 Developer Guide
+                    </a>
+                </div>
+
+                <h2 id="what">What is Dev Notes?</h2>
+                <p>Dev Notes is a <strong>powerful, portable, and privacy-focused</strong> note-taking application designed specifically for developers. It's a single HTML file that contains a complete note management system with syntax highlighting, markdown support, custom categories, and persistent storage.</p>
+
+                <div class="card">
+                    <div class="card-title">
+                        <span class="card-icon">🎯</span>
+                        Key Characteristics
+                    </div>
+                    <ul>
+                        <li><strong>Single File:</strong> The entire application is contained in one HTML file (~2,500 lines)</li>
+                        <li><strong>No Dependencies:</strong> No npm, no build process, no external libraries needed</li>
+                        <li><strong>Works Offline:</strong> Full functionality without internet connection</li>
+                        <li><strong>Privacy First:</strong> All data stored locally in browser storage</li>
+                        <li><strong>Portable:</strong> Email it, USB it, share it - works everywhere</li>
+                    </ul>
+                </div>
+
+                <h2 id="why">Why Dev Notes?</h2>
+                <p>Dev Notes was created to solve common problems developers face with note-taking:</p>
+
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <div class="feature-title">Privacy & Security</div>
+                        <div class="feature-description">Your notes never leave your device. No cloud, no tracking, no accounts required.</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📦</div>
+                        <div class="feature-title">Zero Setup</div>
+                        <div class="feature-description">Download, open, use. No installation, configuration, or dependencies.</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🚀</div>
+                        <div class="feature-title">Instant Access</div>
+                        <div class="feature-description">Double-click to launch. Your notes are ready in milliseconds.</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">💼</div>
+                        <div class="feature-title">Truly Portable</div>
+                        <div class="feature-description">Carry on USB, email to yourself, or sync via any file service.</div>
+                    </div>
+                </div>
+
+                <h2 id="who">Who is it for?</h2>
+                <p>Dev Notes is perfect for:</p>
+                <ul>
+                    <li><strong>Developers</strong> who need to store code snippets, API keys, and configurations</li>
+                    <li><strong>System Administrators</strong> managing server configs and commands</li>
+                    <li><strong>DevOps Engineers</strong> documenting deployment procedures</li>
+                    <li><strong>Technical Writers</strong> creating documentation with code examples</li>
+                    <li><strong>Students</strong> learning programming and taking technical notes</li>
+                    <li><strong>Anyone</strong> who values privacy and wants a powerful offline notes app</li>
+                </ul>
+            </section>
+
+            <!-- Quick Start Section -->
+            <section id="quick-start" class="section">
+                <h1>🚀 Quick Start Guide</h1>
+                
+                <div class="alert alert-success">
+                    Get up and running with Dev Notes in under 60 seconds!
+                </div>
+
+                <h3>Step 1: Download</h3>
+                <p>Download the <code>dev-notes-v3.5.html</code> file to your computer.</p>
+
+                <h3>Step 2: Open</h3>
+                <p>Double-click the file to open it in your web browser (Chrome, Firefox, Edge, Safari all work).</p>
+
+                <h3>Step 3: Create Your First Note</h3>
+                <ol>
+                    <li>Click <kbd>+ New Note</kbd> or press <kbd>Ctrl</kbd> + <kbd>N</kbd></li>
+                    <li>Give your note a title</li>
+                    <li>Select a category (API, Config, Snippet, etc.)</li>
+                    <li>Choose a language for syntax highlighting</li>
+                    <li>Start typing!</li>
+                </ol>
+
+                <div class="card">
+                    <div class="card-title">
+                        <span class="card-icon">💡</span>
+                        Quick Tips
+                    </div>
+                    <ul>
+                        <li>Press <kbd>?</kbd> to see all keyboard shortcuts</li>
+                        <li>Press <kbd>Ctrl</kbd> + <kbd>D</kbd> to toggle dark/light theme</li>
+                        <li>Press <kbd>Ctrl</kbd> + <kbd>E</kbd> to preview markdown</li>
+                        <li>Your notes are automatically saved to browser storage</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- User Guide Section -->
+            <section id="user-guide" class="section">
+                <h1>📖 Complete User Guide</h1>
+
+                <h2 id="creating-notes">Creating & Editing Notes</h2>
+                
+                <h3>Creating a New Note</h3>
+                <p>There are multiple ways to create a new note:</p>
+                <ul>
+                    <li>Click the <kbd>+ New Note</kbd> button in the header</li>
+                    <li>Press <kbd>Ctrl</kbd> + <kbd>N</kbd> (or <kbd>Cmd</kbd> + <kbd>N</kbd> on Mac)</li>
+                </ul>
+
+                <h3>Note Components</h3>
+                <p>Each note consists of:</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Purpose</th>
+                            <th>Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Title</strong></td>
+                            <td>Quick identification</td>
+                            <td>"API Authentication Flow"</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Category</strong></td>
+                            <td>Organizational grouping</td>
+                            <td>🔌 API, ⚙️ Config, 📋 Snippet</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tags</strong></td>
+                            <td>Flexible labeling</td>
+                            <td>#auth #jwt #production</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Language</strong></td>
+                            <td>Syntax highlighting</td>
+                            <td>JavaScript, Python, Markdown</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Content</strong></td>
+                            <td>Your actual notes</td>
+                            <td>Code, documentation, configs</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2 id="organizing">Organizing Your Notes</h2>
+
+                <h3>Categories</h3>
+                <p>Categories are color-coded organizational groups. Default categories include:</p>
+                
+                <div class="feature-grid">
+                    <div class="card">
+                        <div class="card-title">🔌 API</div>
+                        <p>API endpoints, documentation, examples</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">⚙️ Config</div>
+                        <p>Configuration files, settings, environment variables</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">📋 Snippet</div>
+                        <p>Reusable code snippets, functions, algorithms</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">📚 Docs</div>
+                        <p>Documentation, guides, references</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">🔐 Security</div>
+                        <p>Security configs, keys, certificates</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">💾 Database</div>
+                        <p>Schemas, queries, migrations</p>
+                    </div>
+                </div>
+
+                <h4>Custom Categories</h4>
+                <p>Create your own categories:</p>
+                <ol>
+                    <li>Click <kbd>⚙️ Manage</kbd> in the sidebar or press <kbd>Ctrl</kbd> + <kbd>M</kbd></li>
+                    <li>Add a new category with custom emoji, name, and color</li>
+                    <li>Edit existing categories to match your workflow</li>
+                    <li>Delete categories you don't need (notes move to "Other")</li>
+                </ol>
+
+                <h3>Tags</h3>
+                <p>Tags provide flexible, searchable labels:</p>
+                <ul>
+                    <li>Add tags by typing in the tags field and pressing <kbd>Enter</kbd></li>
+                    <li>Remove tags by clicking the <kbd>×</kbd> button</li>
+                    <li>Search for tags using the search bar</li>
+                    <li>Use tags for project names, priorities, or any custom organization</li>
+                </ul>
+
+                <div class="alert alert-info">
+                    <strong>Pro Tip:</strong> Use a consistent tagging system like #project-name, #priority-high, #todo, #done for better organization.
+                </div>
+
+                <h2 id="markdown">Markdown Support</h2>
+                <p>Dev Notes includes full markdown support with live preview:</p>
+
+                <h3>Markdown Basics</h3>
+                <pre><code># Heading 1
+## Heading 2
+### Heading 3
+
+**Bold text**
+*Italic text*
+~~Strikethrough~~
+
+- Unordered list
+- Another item
+  - Nested item
+
+1. Ordered list
+2. Second item
+
+`Inline code`
+
+```javascript
+// Code block with syntax highlighting
+function example() {
+    return "Hello, World!";
+}
+```
+
+[Link text](https://example.com)
+
+> Blockquote
+
+| Table | Header |
+|-------|--------|
+| Cell  | Cell   |</code></pre>
+
+                <h3>Using Markdown</h3>
+                <ol>
+                    <li>Select "Markdown" from the language dropdown</li>
+                    <li>Write your content using markdown syntax</li>
+                    <li>Click "Preview" or press <kbd>Ctrl</kbd> + <kbd>E</kbd> to see formatted output</li>
+                    <li>Toggle back to "Edit" to continue writing</li>
+                </ol>
+
+                <h2 id="shortcuts">Keyboard Shortcuts</h2>
+                <p>Master Dev Notes with these keyboard shortcuts:</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Action</th>
+                            <th>Windows/Linux</th>
+                            <th>Mac</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Create new note</td>
+                            <td><kbd>Ctrl</kbd> + <kbd>N</kbd></td>
+                            <td><kbd>Cmd</kbd> + <kbd>N</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Save note</td>
+                            <td><kbd>Ctrl</kbd> + <kbd>S</kbd></td>
+                            <td><kbd>Cmd</kbd> + <kbd>S</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Toggle theme</td>
+                            <td><kbd>Ctrl</kbd> + <kbd>D</kbd></td>
+                            <td><kbd>Cmd</kbd> + <kbd>D</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Toggle preview</td>
+                            <td><kbd>Ctrl</kbd> + <kbd>E</kbd></td>
+                            <td><kbd>Cmd</kbd> + <kbd>E</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Search notes</td>
+                            <td><kbd>Ctrl</kbd> + <kbd>/</kbd></td>
+                            <td><kbd>Cmd</kbd> + <kbd>/</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Delete note</td>
+                            <td><kbd>Shift</kbd> + <kbd>Delete</kbd></td>
+                            <td><kbd>Shift</kbd> + <kbd>Delete</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Next note</td>
+                            <td><kbd>Alt</kbd> + <kbd>↓</kbd></td>
+                            <td><kbd>Option</kbd> + <kbd>↓</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Previous note</td>
+                            <td><kbd>Alt</kbd> + <kbd>↑</kbd></td>
+                            <td><kbd>Option</kbd> + <kbd>↑</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Manage categories</td>
+                            <td><kbd>Ctrl</kbd> + <kbd>M</kbd></td>
+                            <td><kbd>Cmd</kbd> + <kbd>M</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Import/Export</td>
+                            <td><kbd>Ctrl</kbd> + <kbd>I</kbd></td>
+                            <td><kbd>Cmd</kbd> + <kbd>I</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Show shortcuts</td>
+                            <td colspan="2"><kbd>?</kbd></td>
+                        </tr>
+                        <tr>
+                            <td>Close dialogs</td>
+                            <td colspan="2"><kbd>Esc</kbd></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Features Section -->
+            <section id="features" class="section">
+                <h1>✨ Complete Feature List</h1>
+
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🎨</div>
+                        <div class="feature-title">Syntax Highlighting</div>
+                        <div class="feature-description">Support for 15+ programming languages with beautiful syntax coloring</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📝</div>
+                        <div class="feature-title">Markdown Support</div>
+                        <div class="feature-description">Full markdown rendering with live preview mode</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🏷️</div>
+                        <div class="feature-title">Categories & Tags</div>
+                        <div class="feature-description">Organize notes with custom categories and flexible tagging</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🌓</div>
+                        <div class="feature-title">Theme System</div>
+                        <div class="feature-description">Light and dark modes with automatic system detection</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⌨️</div>
+                        <div class="feature-title">Keyboard Shortcuts</div>
+                        <div class="feature-description">Complete keyboard control for power users</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">💾</div>
+                        <div class="feature-title">Persistent Storage</div>
+                        <div class="feature-description">Automatic saving to browser localStorage</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📦</div>
+                        <div class="feature-title">Import/Export</div>
+                        <div class="feature-description">Backup and transfer notes via JSON files</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔍</div>
+                        <div class="feature-title">Search</div>
+                        <div class="feature-description">Search through titles, content, and tags instantly</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📱</div>
+                        <div class="feature-title">Responsive Design</div>
+                        <div class="feature-description">Works perfectly on desktop, tablet, and mobile</div>
+                    </div>
+                </div>
+
+                <h2>Version History</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Version</th>
+                            <th>Features Added</th>
+                            <th>Release Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="badge badge-primary">v3.5</span></td>
+                            <td>Theme System</td>
+                            <td>Light/dark modes with persistence</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-primary">v3.4</span></td>
+                            <td>Custom Categories</td>
+                            <td>Create and manage custom categories</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-primary">v3.3</span></td>
+                            <td>Keyboard Shortcuts</td>
+                            <td>Complete keyboard control</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-primary">v3.2</span></td>
+                            <td>Categories & Tags</td>
+                            <td>Organization system</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-primary">v3.1</span></td>
+                            <td>Markdown Support</td>
+                            <td>Full markdown with preview</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-primary">v3.0</span></td>
+                            <td>Syntax Highlighting</td>
+                            <td>Multi-language support</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-primary">v2.0</span></td>
+                            <td>Persistent Storage</td>
+                            <td>localStorage implementation</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-primary">v1.0</span></td>
+                            <td>Core Features</td>
+                            <td>Initial release</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Developer Section -->
+            <section id="developer" class="section">
+                <h1>💻 Developer Guide</h1>
+
+                <div class="alert alert-info">
+                    This section covers implementation details, customization options, and technical architecture for developers.
+                </div>
+
+                <h2 id="setup">Setup & Installation</h2>
+                
+                <h3>Requirements</h3>
+                <ul>
+                    <li>Any modern web browser (Chrome 90+, Firefox 88+, Safari 14+, Edge 90+)</li>
+                    <li>No server required</li>
+                    <li>No build process</li>
+                    <li>No dependencies</li>
+                </ul>
+
+                <h3>Development Setup</h3>
+                <pre><code># Option 1: Direct Usage
+1. Download dev-notes-v3.5.html
+2. Open in browser
+3. Start using
+
+# Option 2: Local Development
+1. Download dev-notes-v3.5.html
+2. Open in your code editor
+3. Make modifications
+4. Refresh browser to see changes
+
+# Option 3: Local Server (for development)
+python -m http.server 8000
+# or
+npx serve
+# Then navigate to http://localhost:8000</code></pre>
+
+                <h2 id="storage">Storage Implementation</h2>
+                
+                <h3>localStorage Structure</h3>
+                <p>Dev Notes uses localStorage with the following keys:</p>
+                
+                <pre><code>// Notes storage
+localStorage.setItem('devNotes_v3', JSON.stringify([
+    {
+        id: 1234567890,           // timestamp-based ID
+        title: "Note Title",
+        content: "Note content",
+        category: "api",
+        tags: ["tag1", "tag2"],
+        language: "javascript",
+        createdAt: "2024-01-01T00:00:00.000Z",
+        updatedAt: "2024-01-01T00:00:00.000Z"
+    }
+]));
+
+// Categories storage
+localStorage.setItem('devNotes_categories_v1', JSON.stringify([
+    {
+        id: "api",
+        label: "API",
+        icon: "🔌",
+        color: "#f59e0b"
+    }
+]));
+
+// Theme storage
+localStorage.setItem('devNotes_theme_v1', 'dark'); // or 'light'</code></pre>
+
+                <h3>Storage Manager Class</h3>
+                <pre><code>class StorageManager {
+    constructor() {
+        this.notesKey = 'devNotes_v3';
+        this.categoriesKey = 'devNotes_categories_v1';
+        this.themeKey = 'devNotes_theme_v1';
+        this.isStorageAvailable = this.checkStorageAvailability();
+    }
+    
+    save(notes) {
+        if (this.isStorageAvailable) {
+            localStorage.setItem(this.notesKey, JSON.stringify(notes));
+            return true;
+        }
+        // Fallback to in-memory storage
+        window.__tempNotes = notes;
+        return true;
+    }
+    
+    load() {
+        if (this.isStorageAvailable) {
+            const data = localStorage.getItem(this.notesKey);
+            return data ? JSON.parse(data) : null;
+        }
+        return window.__tempNotes || null;
+    }
+}</code></pre>
+
+                <h3>Storage Limits</h3>
+                <ul>
+                    <li>localStorage typically allows 5-10MB per origin</li>
+                    <li>Each note is approximately 2-5KB</li>
+                    <li>Can store approximately 1,000-2,000 notes</li>
+                    <li>Includes storage size indicator in UI</li>
+                </ul>
+
+                <h2 id="customization">Customization Guide</h2>
+
+                <h3>Adding New Languages</h3>
+                <p>To add syntax highlighting for a new language:</p>
+                
+                <pre><code>// 1. Add Prism.js component in the head
+&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-ruby.min.js"&gt;&lt;/script&gt;
+
+// 2. Add to languages array
+const languages = [
+    { value: 'ruby', label: 'Ruby' },
+    // ... other languages
+];</code></pre>
+
+                <h3>Custom Color Schemes</h3>
+                <p>Modify CSS variables to create custom themes:</p>
+                
+                <pre><code>/* Custom theme example */
+:root {
+    --bg-primary: #your-color;
+    --bg-secondary: #your-color;
+    --bg-tertiary: #your-color;
+    --text-primary: #your-color;
+    --text-secondary: #your-color;
+    --accent: #your-color;
+    --accent-hover: #your-color;
+    --border: #your-color;
+}</code></pre>
+
+                <h3>Adding Custom Features</h3>
+                <p>The modular structure allows easy feature additions:</p>
+                
+                <pre><code>// Example: Add a word counter
+function getWordCount(text) {
+    return text.trim().split(/\s+/).length;
+}
+
+// Add to note display
+const wordCount = getWordCount(note.content);
+document.getElementById('wordCount').textContent = `${wordCount} words`;</code></pre>
+            </section>
+
+            <!-- Architecture Section -->
+            <section id="architecture" class="section">
+                <h1>🏗️ Technical Architecture</h1>
+
+                <h2>Application Structure</h2>
+                <pre><code>dev-notes-v3.5.html
+├── HTML Structure (150 lines)
+│   ├── Header
+│   ├── Sidebar
+│   ├── Canvas Area
+│   └── Modals
+├── CSS Styles (800 lines)
+│   ├── Base Styles
+│   ├── Theme System
+│   ├── Component Styles
+│   └── Responsive Design
+└── JavaScript (1,600 lines)
+    ├── Storage Manager
+    ├── Note Management
+    ├── Category System
+    ├── Theme Controller
+    ├── Keyboard Shortcuts
+    ├── Search & Filter
+    └── Import/Export</code></pre>
+
+                <h2>Core Components</h2>
+
+                <h3>1. Storage Layer</h3>
+                <ul>
+                    <li>Abstracted storage interface</li>
+                    <li>localStorage with fallback to memory</li>
+                    <li>Automatic persistence</li>
+                    <li>Import/Export functionality</li>
+                </ul>
+
+                <h3>2. Note Management</h3>
+                <ul>
+                    <li>CRUD operations</li>
+                    <li>Real-time search</li>
+                    <li>Category filtering</li>
+                    <li>Tag system</li>
+                </ul>
+
+                <h3>3. Editor System</h3>
+                <ul>
+                    <li>Plain text editor</li>
+                    <li>Syntax highlighting (Prism.js)</li>
+                    <li>Markdown rendering (Marked.js)</li>
+                    <li>Preview mode</li>
+                </ul>
+
+                <h3>4. UI Components</h3>
+                <ul>
+                    <li>Responsive sidebar</li>
+                    <li>Modal system</li>
+                    <li>Theme toggle</li>
+                    <li>Keyboard navigation</li>
+                </ul>
+
+                <h2>Data Flow</h2>
+                <pre><code>User Action
+    ↓
+Event Handler
+    ↓
+State Update (notes array)
+    ↓
+Storage Save (localStorage)
+    ↓
+UI Re-render
+    ↓
+Visual Feedback</code></pre>
+
+                <h2>Performance Optimizations</h2>
+                <ul>
+                    <li><strong>Debounced Search:</strong> Search triggers after user stops typing</li>
+                    <li><strong>Virtual Scrolling:</strong> Only visible notes are rendered</li>
+                    <li><strong>Lazy Loading:</strong> Syntax highlighting on demand</li>
+                    <li><strong>Efficient Storage:</strong> Compressed JSON storage</li>
+                    <li><strong>CSS Transitions:</strong> Hardware-accelerated animations</li>
+                </ul>
+
+                <h2>Security Considerations</h2>
+                <ul>
+                    <li><strong>XSS Prevention:</strong> All user input is escaped</li>
+                    <li><strong>No External Requests:</strong> Completely offline operation</li>
+                    <li><strong>Local Storage Only:</strong> No data transmission</li>
+                    <li><strong>Content Security:</strong> No eval() or inline scripts</li>
+                </ul>
+
+                <h2>Browser Compatibility</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Chrome</th>
+                            <th>Firefox</th>
+                            <th>Safari</th>
+                            <th>Edge</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>localStorage</td>
+                            <td>✅ 4+</td>
+                            <td>✅ 3.5+</td>
+                            <td>✅ 4+</td>
+                            <td>✅ 12+</td>
+                        </tr>
+                        <tr>
+                            <td>CSS Grid</td>
+                            <td>✅ 57+</td>
+                            <td>✅ 52+</td>
+                            <td>✅ 10.1+</td>
+                            <td>✅ 16+</td>
+                        </tr>
+                        <tr>
+                            <td>CSS Variables</td>
+                            <td>✅ 49+</td>
+                            <td>✅ 31+</td>
+                            <td>✅ 9.1+</td>
+                            <td>✅ 15+</td>
+                        </tr>
+                        <tr>
+                            <td>ES6 Features</td>
+                            <td>✅ 51+</td>
+                            <td>✅ 54+</td>
+                            <td>✅ 10+</td>
+                            <td>✅ 15+</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- FAQ Section -->
+            <section id="faq" class="section">
+                <h1>❓ Frequently Asked Questions</h1>
+
+                <div class="card">
+                    <div class="card-title">Q: Where is my data stored?</div>
+                    <p>Your data is stored locally in your browser's localStorage. It never leaves your device and is not transmitted to any server.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Q: What happens if I clear my browser data?</div>
+                    <p>Clearing browser data will delete your notes. Always use the Export feature to create backups of important notes.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Q: Can I use Dev Notes on multiple devices?</div>
+                    <p>Yes! Use the Export feature on one device and Import on another. You can sync via any file sharing service (Dropbox, Google Drive, etc.).</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Q: How many notes can I store?</div>
+                    <p>Typically 1,000-2,000 notes, depending on size. localStorage usually provides 5-10MB of storage per domain.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Q: Can I collaborate with others?</div>
+                    <p>Dev Notes is designed for personal use. For collaboration, you can export and share JSON files.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Q: Does it work offline?</div>
+                    <p>Yes! Dev Notes works completely offline. No internet connection is required.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Q: Can I modify the source code?</div>
+                    <p>Absolutely! Dev Notes is provided as-is for you to use and modify as needed.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Q: Is there a mobile app?</div>
+                    <p>Dev Notes works in mobile browsers. You can add it to your home screen for an app-like experience.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Q: How do I report bugs or suggest features?</div>
+                    <p>Since Dev Notes is a standalone application, you can modify it directly to suit your needs.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Q: What's the difference between categories and tags?</div>
+                    <p>Categories are predefined groups (like API, Config, etc.) while tags are flexible labels you create on-the-fly for any purpose.</p>
+                </div>
+
+                <h2>Troubleshooting</h2>
+
+                <div class="alert alert-warning">
+                    <strong>Common Issues and Solutions:</strong>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Issue</th>
+                            <th>Solution</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Notes not saving</td>
+                            <td>Check if localStorage is enabled in your browser settings</td>
+                        </tr>
+                        <tr>
+                            <td>Can't open file directly</td>
+                            <td>Some browsers block local file access. Use a local server or different browser</td>
+                        </tr>
+                        <tr>
+                            <td>Theme not persisting</td>
+                            <td>Ensure cookies and site data are not being cleared on browser close</td>
+                        </tr>
+                        <tr>
+                            <td>Keyboard shortcuts not working</td>
+                            <td>Ensure no browser extensions are intercepting the shortcuts</td>
+                        </tr>
+                        <tr>
+                            <td>Import failing</td>
+                            <td>Verify the JSON file is valid and was exported from Dev Notes</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Tips Section -->
+            <section id="tips" class="section">
+                <h1>💡 Tips & Best Practices</h1>
+
+                <h2>Organization Tips</h2>
+                <ul>
+                    <li><strong>Use consistent naming:</strong> "Project - Component - Type" (e.g., "MyApp - Auth - API Endpoints")</li>
+                    <li><strong>Tag strategically:</strong> Use tags for status (#todo, #done), priority (#urgent), or project (#project-x)</li>
+                    <li><strong>Regular cleanup:</strong> Archive or delete old notes monthly</li>
+                    <li><strong>Template notes:</strong> Create template notes for common formats</li>
+                </ul>
+
+                <h2>Productivity Tips</h2>
+                <ul>
+                    <li><strong>Master shortcuts:</strong> Learn 3-5 keyboard shortcuts to start</li>
+                    <li><strong>Use markdown:</strong> Faster than formatting with mouse</li>
+                    <li><strong>Quick capture:</strong> Ctrl+N → Type → Ctrl+S workflow</li>
+                    <li><strong>Search operators:</strong> Use tags in search for precise filtering</li>
+                </ul>
+
+                <h2>Backup Strategy</h2>
+                <ul>
+                    <li><strong>Weekly exports:</strong> Export your notes every week</li>
+                    <li><strong>Version control:</strong> Keep exported JSON files in Git</li>
+                    <li><strong>Cloud sync:</strong> Store exports in cloud storage</li>
+                    <li><strong>Multiple copies:</strong> Keep the HTML file in multiple locations</li>
+                </ul>
+
+                <h2>Advanced Usage</h2>
+                <ul>
+                    <li><strong>API Documentation:</strong> Use markdown tables for endpoint documentation</li>
+                    <li><strong>Code Library:</strong> Build your personal snippet library with categories</li>
+                    <li><strong>Knowledge Base:</strong> Create a searchable knowledge base</li>
+                    <li><strong>Project Notes:</strong> One category per project for organization</li>
+                </ul>
+            </section>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p><strong>Dev Notes v3.5</strong> - A powerful, portable, privacy-focused notes app for developers</p>
+            <p>Created with ❤️ for the developer community • Single HTML file • No dependencies • Works everywhere</p>
+        </div>
+    </footer>
+
+    <script>
+        // Theme toggle
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme') || 'light';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            body.setAttribute('data-theme', newTheme);
+            
+            const icon = document.getElementById('themeIcon');
+            const text = document.getElementById('themeText');
+            
+            if (newTheme === 'dark') {
+                icon.textContent = '🌙';
+                text.textContent = 'Dark Mode';
+            } else {
+                icon.textContent = '☀️';
+                text.textContent = 'Light Mode';
+            }
+            
+            // Save preference
+            localStorage.setItem('docs_theme', newTheme);
+        }
+
+        // Load saved theme
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('docs_theme') || 'light';
+            document.body.setAttribute('data-theme', savedTheme);
+            
+            const icon = document.getElementById('themeIcon');
+            const text = document.getElementById('themeText');
+            
+            if (savedTheme === 'dark') {
+                icon.textContent = '🌙';
+                text.textContent = 'Dark Mode';
+            } else {
+                icon.textContent = '☀️';
+                text.textContent = 'Light Mode';
+            }
+        });
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+                
+                // Update active states
+                document.querySelectorAll('.nav-link, .toc-link').forEach(link => {
+                    link.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                // Find corresponding TOC link
+                const tocLink = document.querySelector(`.toc-link[href="${this.getAttribute('href')}"]`);
+                if (tocLink) {
+                    tocLink.classList.add('active');
+                }
+            });
+        });
+
+        // Active section detection
+        const sections = document.querySelectorAll('.section');
+        const navLinks = document.querySelectorAll('.nav-link, .toc-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
