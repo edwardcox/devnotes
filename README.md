@@ -1,8 +1,8 @@
-# Dev Notes v3.5
+# Dev Notes v3.6
 
 A powerful, single-file HTML developer notes application with syntax highlighting, markdown support, and persistent storage.
 
-![Version](https://img.shields.io/badge/version-3.5-blue)
+![Version](https://img.shields.io/badge/version-3.6-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Platform](https://img.shields.io/badge/platform-web-lightgrey)
 
