@@ -10,6 +10,8 @@ A powerful, single-file HTML developer notes application with syntax highlightin
 
 Dev Notes is a feature-rich, portable note-taking application designed specifically for developers. It runs entirely in your browser from a single HTML file - no server, no installation, no dependencies. Perfect for storing code snippets, API documentation, configuration files, and technical notes.
 
+<img width="2538" height="1259" alt="image" src="https://github.com/user-attachments/assets/5b96c12b-5cd9-4c45-bf90-343a78eb6ee4" />
+
 **Created by:** Edward Cox  
 **Contact:** edward.cox02@gmail.com  
 **License:** MIT License (Open Source)
